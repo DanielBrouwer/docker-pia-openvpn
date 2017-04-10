@@ -1,5 +1,4 @@
 FROM alpine:latest
-MAINTAINER Ignatius Teo <ignatius.teo@gmail.com>
 
 RUN apk add --no-cache openvpn
 

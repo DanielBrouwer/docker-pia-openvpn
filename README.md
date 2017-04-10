@@ -3,11 +3,12 @@
 # Private Internet Access OpenVPN
 An Alpine Linux container running OpenVPN via Private Internet Access
 
-Based on [ColinHebert/pia-openvpn](https://hub.docker.com/r/colinhebert/pia-openvpn/)
+Forked from [act28/pia-openvpn](https://github.com/act28/pia-openvpn) and inspired by [nickabbey/pia-openvpn](https://github.com/nickabbey/pia-openvpn), both based on [ColinHebert/pia-openvpn](https://github.com/ColinHebert/pia-openvpn).
 
-*Improvements*
-* Updated to new PIA configs with strong encryption (AES-256-CBC data encryption, RSA-4096 SSL handshake, SHA256 message authentication)
-* Updated README
+## Improvements compared to [ColinHebert/pia-openvpn](https://github.com/ColinHebert/pia-openvpn)
+* Updated `README.md`.
+* Mounting an `auth.conf` file actually works. Thanks to @nickabbey for showing the way.
+* The latest PIA configs are used with strong encryption. Thanks to @act28 for doing that.
 
 # What is Private Internet Access
 Private Internet Access VPN Service encrypts your connection and provides you with an anonymous IP to protect your privacy.
@@ -25,7 +26,7 @@ docker run --cap-add=NET_ADMIN --device=/dev/net/tun --name=pia -d \
   -e 'REGION=<region>' \
   -e 'USERNAME=<pia_username>' \
   -e 'PASSWORD=<pia_password>' \
-  act28/pia-openvpn
+  derbenni/pia-openvpn
 ```
 
 Substitute the environment variables for `REGION`, `USERNAME`, and `PASSWORD` as indicated.
@@ -51,7 +52,7 @@ Every parameter provided to the `docker run` command is directly passed as an ar
 This will run the openvpn client with the `--pull` option:
 ```Shell
 docker run ... --name=pia \
-  act28/pia-openvpn \
+  derbenni/pia-openvpn \
     --pull
 ```
 
@@ -61,14 +62,12 @@ By default this image relies on the variables `USERNAME` and `PASSWORD` to be se
 You can bind mount a local file containing the credentials, like so:
 ```Shell
 docker run ... --name=pia \
-  -e 'REGION=US East' \
-  -v '</path/to/auth.conf>:auth.conf' \
-  act28/pia-openvpn \
-    --auth-user-pass auth.conf
+  -v '</path/to/auth.conf>:/pia/auth.conf' \
+  derbenni/pia-openvpn
 ```
 
 ## Connection between containers behind PIA
-Any container started with `--net=container:...` will share the same network stack as the PIA container, therefore they will have the same local IP address.
+Any container started with `--net=container:<name>` will share the same network stack as the PIA container, therefore they will have the same local IP address.
 
 [Prior to Docker 1.9](https://docs.docker.com/engine/userguide/networking/default_network/dockerlinks/) `--link=pia:mycontainer` was the recommended way to connect to a specific container.
 
@@ -83,7 +82,7 @@ This creates a network called `vpn` in which containers can address each other b
 
 ### Start the PIA container in the vpn
 ```Shell
-docker run ... --net=vpn --name=pia act28/pia-openvpn
+docker run ... --net=vpn --name=pia derbenni/pia-openvpn
 ```
 
 In `vpn` there is now a resolvable name `pia` that points to that newly created container.
