@@ -26,7 +26,7 @@ docker run --cap-add=NET_ADMIN --device=/dev/net/tun --name=pia -d \
   -e 'REGION=<region>' \
   -e 'USERNAME=<pia_username>' \
   -e 'PASSWORD=<pia_password>' \
-  derbenni/pia-openvpn
+  derbenni/docker-pia-openvpn
 ```
 
 Substitute the environment variables for `REGION`, `USERNAME`, and `PASSWORD` as indicated.
@@ -52,7 +52,7 @@ Every parameter provided to the `docker run` command is directly passed as an ar
 This will run the openvpn client with the `--pull` option:
 ```Shell
 docker run ... --name=pia \
-  derbenni/pia-openvpn \
+  derbenni/docker-pia-openvpn \
     --pull
 ```
 
@@ -63,7 +63,7 @@ You can bind mount a local file containing the credentials, like so:
 ```Shell
 docker run ... --name=pia \
   -v '</path/to/auth.conf>:/pia/auth.conf' \
-  derbenni/pia-openvpn
+  derbenni/docker-pia-openvpn
 ```
 
 ## Connection between containers behind PIA
@@ -82,7 +82,7 @@ This creates a network called `vpn` in which containers can address each other b
 
 ### Start the PIA container in the vpn
 ```Shell
-docker run ... --net=vpn --name=pia derbenni/pia-openvpn
+docker run ... --net=vpn --name=pia derbenni/docker-pia-openvpn
 ```
 
 In `vpn` there is now a resolvable name `pia` that points to that newly created container.
