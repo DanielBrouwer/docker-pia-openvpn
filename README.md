@@ -26,7 +26,7 @@ The goal is to start this container first, and then run other containers within 
 ```Shell
 docker run --cap-add=NET_ADMIN --device=/dev/net/tun --name=pia -d \
   --restart=always
-  --dns 209.222.18.222 --dns 209.222.18.218 \
+  --dns 8.8.8.8 --dns 8.8.4.4 \
   -e 'REGION=<region>' \
   -e 'USERNAME=<pia_username>' \
   -e 'PASSWORD=<pia_password>' \
@@ -35,7 +35,7 @@ docker run --cap-add=NET_ADMIN --device=/dev/net/tun --name=pia -d \
 
 Substitute the environment variables for `REGION`, `USERNAME`, and `PASSWORD` as indicated.
 
-_NOTE:_ `REGION` is optional. The default region is set to `US East`. `REGION` should match the supported PIA `.opvn` region config. See the [PIA Support page](https://www.privateinternetaccess.com/pages/client-support/#third) for details.
+_NOTE:_ `REGION` is optional. The default region is set to `Netherlands`. `REGION` should match the supported PIA `.opvn` region config. See the [PIA Support page](https://www.privateinternetaccess.com/pages/client-support/#third) for details.
 
 Due to the nature of the VPN client, this container must be started with some additional privileges, `--cap-add=NET_ADMIN` and `--device=/dev/net/tun` make sure that the tunnel can be created from within the container.
 
